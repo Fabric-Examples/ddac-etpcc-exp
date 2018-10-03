@@ -1,0 +1,7 @@
+etpcc-client-java/bin
+etpcc-client-java/build
+.project
+.settings
+etpcc-client-java/.gradle
+*.log
+/.DS_Store

@@ -1,0 +1,7 @@
+performance.number=4000
+fabric.host=9.186.91.180
+fabric.ordererWaitTimeMilliSecs=600000
+fabric.channel=yzhchannel
+fabric.chaincodeId=myfoo
+fabric.mspId=YzhMSP
+fabric.invokeWaitMillis=6000000

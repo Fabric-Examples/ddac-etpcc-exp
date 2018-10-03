@@ -1,0 +1,65 @@
+[
+  {
+    "norder": {
+      "freq": 2.00,
+      "cost_dt": 2.191,
+      "cost_enc": [
+        {"Warehouse": 0.1},
+        {"District": 0.1},
+        {"Stock": 0.1},
+        {"Customer": 0.1},
+        {"Item": 0.1},
+        {"New_Order": 0.1},
+        {"Order": 0.1},
+        {"Order_Line": 0.1}
+      ]
+    }
+  },
+  {
+    "pay": {
+      "freq": 2.00,
+      "cost_dt": 2.191,
+      "cost_enc": [
+        {"Warehouse": 0.1},
+        {"District": 0.1},
+        {"Customer": 0.1},
+        {"History": 0.1},
+        {"Order": 0.1}
+      ]
+    }
+  },
+  {
+    "orders": {
+      "freq": 2.00,
+      "cost_dt": 2.191,
+      "cost_enc": [
+        {"Customer": 0.1},
+        {"Order": 3.187},
+        {"Order_Line": 3.187}
+      ]
+    }
+  },
+  {
+    "deliver": {
+      "freq": 2.00,
+      "cost_dt": 2.191,
+      "cost_enc": [
+        {"Customer": 0.1},
+        {"New_Order": 3.187},
+        {"Order_Line": 3.187}
+      ]
+    }
+  },
+  {
+    "stockl": {
+      "freq": 2.00,
+      "cost_dt": 2.191,
+      "cost_enc": [
+        {"Warehouse": 0.01},
+        {"District": 0.01},
+        {"Stock": 3.187},
+        {"Order_Line": 3.187}
+      ]
+    }
+  }
+]

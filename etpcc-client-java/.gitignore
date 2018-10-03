@@ -1,0 +1,15 @@
+.project
+.settings
+.gradle
+bin
+build
+.classpath
+.gradle/
+.idea/
+out/
+.DS_Store
+src/.DS_Store
+src/main/.DS_Store
+src/main/java/.DS_Store
+src/main/java/org/.DS_Store
+src/main/java/org/etpcc/.DS_Store

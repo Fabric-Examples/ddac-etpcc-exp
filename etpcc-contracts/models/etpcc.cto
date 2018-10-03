@@ -1,0 +1,421 @@
+/**
+ * My commodity trading network
+ */
+namespace org.etpcc
+
+// asset : History order
+// participant : company WAREHOUSE customer
+
+participant Warehouse identified by W_ID {
+  o String W_ID
+  o String W_NAME
+  o String W_STREET_1
+  o String W_STREET_2
+  o String W_CITY
+  o String W_STATE
+  o String W_ZIP
+  o Double W_TAX
+  o Double W_YTD
+}
+
+participant Company identified by P_ID {
+  o String P_ID
+  o String P_NAME
+  o String P_STREET_1
+  o String P_STREET_2
+  o String P_CITY
+  o String P_STATE
+  o String P_ZIP
+}
+
+abstract asset Encryption {
+  o String encPayload optional
+}
+
+/** A district does not belong to one warehouse anymore, instead, it may 
+    share multiple warehouses
+  */
+asset District identified by D_ID extends Encryption {
+  /**primary change from D_ID__D_W_ID to D_ID  */
+  o String D_ID   
+  o String D_NAME
+  o String D_STREET_1
+  o String D_STREET_2
+  o String D_CITY
+  o String D_STATE
+  o String D_ZIP
+  o Double D_TAX
+  o Double D_YTD
+  o Integer D_NEXT_O_ID
+  --> Warehouse[] D_W_IDS optional
+}
+
+/* We use C_ID to identify a customer directly */
+asset Customer identified by C_ID extends Encryption {
+  /*o String id     primary key: (C_W_ID, C_D_ID, C_ID) */
+  o String C_ID 
+  o String C_D_ID
+  /*o String C_W_ID*/
+  o String C_FIRST
+  o String C_MIDDLE
+  o String C_LAST
+  o String C_STREET_1
+  o String C_STREET_2
+  o String C_CITY
+  o String C_STATE
+  o String C_ZIP
+  o String C_PHONE
+  o DateTime C_SINCE
+  o String C_CREDIT 
+  o Double C_CREDIT_LIM
+  o Double C_DISCOUNT
+  o Double C_BALANCE
+  o Double C_YTD_PAYMENT
+  o Double C_PAYMENT_CNT
+  o Double C_DELIVERY_CNT
+  o String C_DATA
+  /*    foreign key (C_W_ID, C_D_ID) references DISTRICT(D_W_ID, D_ID) ON DELETE CASCADE */
+}
+
+/** The customer is no longer associated with only one warehouse
+ */
+asset History identified by H_ID extends Encryption{
+  o String H_ID
+  o String H_C_ID
+  o String H_C_D_ID
+  /*o String H_C_W_ID*/
+  o String H_D_ID
+  o String H_W_ID
+  o DateTime H_DATE
+  o Double H_AMOUNT
+  o String H_DATA
+  --> Customer H_C_ID__H_C_D_ID__H_C_W_ID optional /* foreign key (H_C_W_ID, H_C_D_ID, H_C_ID) references CUSTOMER(C_W_ID, C_D_ID, C_ID) ON DELETE CASCADE, */
+  --> District H_D_ID__H_W_ID  optional/* foreign key (H_W_ID, H_D_ID) references DISTRICT(D_W_ID, D_ID) ON DELETE CASCADE */
+}
+
+asset Order identified by O_ID__O_D_ID__O_W_ID extends Encryption {
+  o String O_ID__O_D_ID__O_W_ID
+  o String O_ID
+  o String O_D_ID
+  o String O_W_ID
+  o String O_C_ID
+  o DateTime O_ENTRY_D
+  o String O_CARRIER_ID optional /**??? */
+  o Double O_OL_CNT
+  o Double O_ALL_LOCAL
+  --> Customer O_C_ID__O_D_ID__O_W_ID optional /* foreign key (O_W_ID, O_D_ID, O_C_ID) references CUSTOMER(C_W_ID, C_D_ID, C_ID) ON DELETE CASCADE */
+}
+
+
+
+asset New_Order identified by NO_O_ID__NO_D_ID__NO_W_ID extends Encryption {
+  o String NO_O_ID__NO_D_ID__NO_W_ID
+  o String NO_O_ID
+  o String NO_D_ID
+  o String NO_W_ID
+  --> Order F_NO_O_ID__NO_D_ID__NO_W_ID optional/**foreign key (NO_W_ID, NO_D_ID, NO_O_ID) references ORDER(O_W_ID, O_D_ID, O_ID) ON DELETE CASCADE */
+}
+
+asset Item identified by I_ID extends Encryption {
+  o String I_ID
+  o String I_IM_ID
+  o String I_NAME
+  o Double I_PRICE
+  o String I_DATA
+}
+
+
+asset Stock identified by S_I_ID__S_W_ID extends Encryption {
+  o String S_I_ID__S_W_ID
+  o Integer S_QUANTITY
+  o String S_DIST_01
+  o String S_DIST_02
+  o String S_DIST_03
+  o String S_DIST_04
+  o String S_DIST_05
+  o String S_DIST_06
+  o String S_DIST_07
+  o String S_DIST_08
+  o String S_DIST_09
+  o String S_DIST_10
+  o Double S_YTD
+  o Double S_ORDER_CNT
+  o Double S_REMOTE_CNT
+  o String S_DATA
+  o String S_W_ID
+  o String S_I_ID
+}
+
+asset Order_Line identified by id extends Encryption {
+  o String id
+  o String OL_O_ID
+  o String OL_D_ID
+  o String O_W_ID
+  o Integer OL_NUMBER
+  o String OL_I_ID
+  o String OL_SUPPLY_W_ID
+  o DateTime OL_DELIVERY_D optional
+  o Double OL_QUANTITY
+  o Double OL_AMOUNT
+  o String OL_DIST_INFO
+  --> Order order optional /**   foreign key (O_W_ID, OL_D_ID, OL_O_ID) references ORDER(O_W_ID, O_D_ID, O_ID) ON DELETE CASCADE, */
+  --> Stock stock optional /**foreign key (OL_SUPPLY_W_ID, OL_I_ID) references STOCK(S_W_ID, S_I_ID) ON DELETE CASCADE */
+
+}
+
+concept new_order_line_param {
+  --> Item  OL_I_ID 
+    --> Warehouse OL_SUPPLY_W_ID
+    o Integer OL_QUANTITY
+}
+
+transaction NewOrder  {
+  --> Warehouse warehouse
+  --> District district
+  --> Customer customer
+  o new_order_line_param[] order_lines
+  o Boolean two_PC default=false
+  o Boolean encrypted default=false //deprecated
+  o String[] encryptionSet optional
+  o String targeCompany default="1"
+  o String targeWarehouse default="1"
+
+}
+
+transaction Payment  {
+  --> Warehouse warehouse
+  --> District district
+  --> Customer customer
+  o Integer H_AMOUNT
+  o Boolean two_PC default=false
+  o Boolean encrypted default=false //deprecated
+  o String[] encryptionSet optional
+  o String targeCompany default="1"
+  o String targeWarehouse default="1"
+}
+
+// concept delivered_order_param {
+//   --> Order O_ID
+//   --> District D_ID
+// }
+
+transaction Delivery  {
+  --> Warehouse warehouse
+  o String O_CARRIER_ID
+  o String[] districtNum
+  o Boolean two_PC default=false
+  o Boolean encrypted default=false //deprecated
+  o String[] encryptionSet optional
+  o String targeCompany default="1"
+  o String targeWarehouse default="1"
+  // --> New_Order new_order
+  // --> Order order
+  // --> Order_Line order_line
+  // o delivered_order_param[] delivered_orders 
+}
+
+transaction OrderStatus  {
+  // --> Warehouse warehouse
+  // --> District district
+  --> Customer customer
+  o Boolean two_PC default=false
+  o Boolean encrypted default=false //deprecated
+  o String[] encryptionSet optional
+  o String targeCompany default="1"
+  o String targeWarehouse default="1"
+}
+
+transaction StockLevel  {
+  --> District district
+  o Boolean two_PC default=false
+  o Boolean encrypted default=false //deprecated
+  o String[] encryptionSet optional
+  o String targeCompany default="1"
+  o String targeWarehouse default="1"
+  // --> Order_Line order_line
+  // --> Stock stock
+}
+
+abstract transaction FabricXA {
+  o Boolean two_PC default=false
+  o Boolean encrypted default=false //deprecated
+  o String[] encryptionSet optional
+  o String targeCompany default="1"
+  o String targeWarehouse default="1"
+}
+
+/** data generator */
+transaction GenerateLoad {
+  o Integer numOfCompanies
+  o Integer numOfWarehouses
+  o Integer numOfDistricts
+  o Integer numOfItems
+  o Integer districtsPerWarehouse
+  o Integer customersPerDistrict
+}
+
+transaction Data_add_Warehouse {
+  o Integer recordNum
+
+}
+
+transaction Data_add_Item {
+  o Integer recordNum
+}
+
+transaction Data_add_District {
+  o Integer warehouseNum 
+  o Integer perWarehouse 
+}
+
+transaction Data_add_Customer {
+  o Integer recordNum 
+  o Integer perDistrict 
+}
+
+transaction Data_add_all_OrderLine {
+  o Integer recordNum
+}
+
+transaction Data_add_all_Order {
+  o Integer recordNum
+}
+
+
+transaction Data_add_Stock {
+  o Integer warehouseNum 
+  o Integer itemNum
+}
+
+transaction testQuery {
+  o String query 
+}
+
+concept Operation {
+  o String op
+  o String modelName
+  o String payload
+}
+
+event WriteSetEvent {
+  o Operation operation
+}
+
+
+transaction BranchTransaction  {
+  o Operation[] operations
+  o Boolean two_PC default=false
+  o Boolean encrypted default=false //deprecated
+  o String[] encryptionSet optional
+  o String targeCompany default="1"
+  o String targeWarehouse default="1"
+}
+
+transaction DeleteAll {
+}
+
+transaction Count {
+  o String model
+}
+
+
+asset History1 extends History {}
+asset History2 extends History {}
+asset History3 extends History {}
+asset History4 extends History {}
+asset History5 extends History {}
+asset History6 extends History {}
+asset History7 extends History {}
+asset History8 extends History {}
+asset History9 extends History {}
+asset History10 extends History {}
+asset History11 extends History {}
+asset History12 extends History {}
+asset History13 extends History {}
+asset History14 extends History {}
+asset History15 extends History {}
+asset History16 extends History {}
+asset History17 extends History {}
+asset History18 extends History {}
+asset History19 extends History {}
+asset History20 extends History {}
+asset Order1 extends Order {}
+asset Order2 extends Order {}
+asset Order3 extends Order {}
+asset Order4 extends Order {}
+asset Order5 extends Order {}
+asset Order6 extends Order {}
+asset Order7 extends Order {}
+asset Order8 extends Order {}
+asset Order9 extends Order {}
+asset Order10 extends Order {}
+asset Order11 extends Order {}
+asset Order12 extends Order {}
+asset Order13 extends Order {}
+asset Order14 extends Order {}
+asset Order15 extends Order {}
+asset Order16 extends Order {}
+asset Order17 extends Order {}
+asset Order18 extends Order {}
+asset Order19 extends Order {}
+asset Order20 extends Order {}
+asset New_Order1 extends New_Order {}
+asset New_Order2 extends New_Order {}
+asset New_Order3 extends New_Order {}
+asset New_Order4 extends New_Order {}
+asset New_Order5 extends New_Order {}
+asset New_Order6 extends New_Order {}
+asset New_Order7 extends New_Order {}
+asset New_Order8 extends New_Order {}
+asset New_Order9 extends New_Order {}
+asset New_Order10 extends New_Order {}
+asset New_Order11 extends New_Order {}
+asset New_Order12 extends New_Order {}
+asset New_Order13 extends New_Order {}
+asset New_Order14 extends New_Order {}
+asset New_Order15 extends New_Order {}
+asset New_Order16 extends New_Order {}
+asset New_Order17 extends New_Order {}
+asset New_Order18 extends New_Order {}
+asset New_Order19 extends New_Order {}
+asset New_Order20 extends New_Order {}
+asset Stock1 extends Stock {}
+asset Stock2 extends Stock {}
+asset Stock3 extends Stock {}
+asset Stock4 extends Stock {}
+asset Stock5 extends Stock {}
+asset Stock6 extends Stock {}
+asset Stock7 extends Stock {}
+asset Stock8 extends Stock {}
+asset Stock9 extends Stock {}
+asset Stock10 extends Stock {}
+asset Stock11 extends Stock {}
+asset Stock12 extends Stock {}
+asset Stock13 extends Stock {}
+asset Stock14 extends Stock {}
+asset Stock15 extends Stock {}
+asset Stock16 extends Stock {}
+asset Stock17 extends Stock {}
+asset Stock18 extends Stock {}
+asset Stock19 extends Stock {}
+asset Stock20 extends Stock {}
+asset Order_Line1 extends Order_Line {}
+asset Order_Line2 extends Order_Line {}
+asset Order_Line3 extends Order_Line {}
+asset Order_Line4 extends Order_Line {}
+asset Order_Line5 extends Order_Line {}
+asset Order_Line6 extends Order_Line {}
+asset Order_Line7 extends Order_Line {}
+asset Order_Line8 extends Order_Line {}
+asset Order_Line9 extends Order_Line {}
+asset Order_Line10 extends Order_Line {}
+asset Order_Line11 extends Order_Line {}
+asset Order_Line12 extends Order_Line {}
+asset Order_Line13 extends Order_Line {}
+asset Order_Line14 extends Order_Line {}
+asset Order_Line15 extends Order_Line {}
+asset Order_Line16 extends Order_Line {}
+asset Order_Line17 extends Order_Line {}
+asset Order_Line18 extends Order_Line {}
+asset Order_Line19 extends Order_Line {}
+asset Order_Line20 extends Order_Line {}

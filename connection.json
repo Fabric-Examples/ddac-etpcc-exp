@@ -1,0 +1,140 @@
+{
+    "name": "hlfabric",
+    "description": "Hyperledger Fabric v1.0",
+    "type": "hlfv1",
+    "keyValStore": "/tmp/composer/.composer-credentials",
+    "timeout": 300,
+    "orderers": [
+        {
+            "url": "grpc://exp1.sl.cloud9.ibm.com:30002"
+        }
+    ],
+    "channel": "yzhchannel",
+    "mspID": "YzhMSP",
+    "ca": {
+        "url": "http://exp1.sl.cloud9.ibm.com:30001",
+        "name": ""
+    },
+    "peers": [
+        {
+            "requestURL": "grpc://exp1.sl.cloud9.ibm.com:31001",
+            "eventURL": "grpc://exp1.sl.cloud9.ibm.com:32001"
+        },
+        {
+            "requestURL": "grpc://exp1.sl.cloud9.ibm.com:31002",
+            "eventURL": "grpc://exp1.sl.cloud9.ibm.com:32002"
+        },
+        {
+            "requestURL": "grpc://exp1.sl.cloud9.ibm.com:31003",
+            "eventURL": "grpc://exp1.sl.cloud9.ibm.com:32003"
+        },
+        {
+            "requestURL": "grpc://exp1.sl.cloud9.ibm.com:31004",
+            "eventURL": "grpc://exp1.sl.cloud9.ibm.com:32004"
+        },
+        {
+            "requestURL": "grpc://exp1.sl.cloud9.ibm.com:31005",
+            "eventURL": "grpc://exp1.sl.cloud9.ibm.com:32005"
+        },
+        {
+            "requestURL": "grpc://exp1.sl.cloud9.ibm.com:31006",
+            "eventURL": "grpc://exp1.sl.cloud9.ibm.com:32006"
+        },
+        {
+            "requestURL": "grpc://exp1.sl.cloud9.ibm.com:31007",
+            "eventURL": "grpc://exp1.sl.cloud9.ibm.com:32007"
+        },
+        {
+            "requestURL": "grpc://exp1.sl.cloud9.ibm.com:31008",
+            "eventURL": "grpc://exp1.sl.cloud9.ibm.com:32008"
+        },
+        {
+            "requestURL": "grpc://exp1.sl.cloud9.ibm.com:31009",
+            "eventURL": "grpc://exp1.sl.cloud9.ibm.com:32009"
+        },
+        {
+            "requestURL": "grpc://exp1.sl.cloud9.ibm.com:31010",
+            "eventURL": "grpc://exp1.sl.cloud9.ibm.com:32010"
+        },
+        {
+            "requestURL": "grpc://exp1.sl.cloud9.ibm.com:31011",
+            "eventURL": "grpc://exp1.sl.cloud9.ibm.com:32011"
+        },
+        {
+            "requestURL": "grpc://exp1.sl.cloud9.ibm.com:31012",
+            "eventURL": "grpc://exp1.sl.cloud9.ibm.com:32012"
+        },
+        {
+            "requestURL": "grpc://exp1.sl.cloud9.ibm.com:31013",
+            "eventURL": "grpc://exp1.sl.cloud9.ibm.com:32013"
+        },
+        {
+            "requestURL": "grpc://exp1.sl.cloud9.ibm.com:31014",
+            "eventURL": "grpc://exp1.sl.cloud9.ibm.com:32014"
+        },
+        {
+            "requestURL": "grpc://exp1.sl.cloud9.ibm.com:31015",
+            "eventURL": "grpc://exp1.sl.cloud9.ibm.com:32015"
+        },
+        {
+            "requestURL": "grpc://exp1.sl.cloud9.ibm.com:31016",
+            "eventURL": "grpc://exp1.sl.cloud9.ibm.com:32016"
+        },
+        {
+            "requestURL": "grpc://exp1.sl.cloud9.ibm.com:31017",
+            "eventURL": "grpc://exp1.sl.cloud9.ibm.com:32017"
+        },
+        {
+            "requestURL": "grpc://exp1.sl.cloud9.ibm.com:31018",
+            "eventURL": "grpc://exp1.sl.cloud9.ibm.com:32018"
+        },
+        {
+            "requestURL": "grpc://exp1.sl.cloud9.ibm.com:31019",
+            "eventURL": "grpc://exp1.sl.cloud9.ibm.com:32019"
+        },
+        {
+            "requestURL": "grpc://exp1.sl.cloud9.ibm.com:31020",
+            "eventURL": "grpc://exp1.sl.cloud9.ibm.com:32020"
+        },
+        {
+            "requestURL": "grpc://exp1.sl.cloud9.ibm.com:31021",
+            "eventURL": "grpc://exp1.sl.cloud9.ibm.com:32021"
+        },
+        {
+            "requestURL": "grpc://exp1.sl.cloud9.ibm.com:31022",
+            "eventURL": "grpc://exp1.sl.cloud9.ibm.com:32022"
+        },
+        {
+            "requestURL": "grpc://exp1.sl.cloud9.ibm.com:31023",
+            "eventURL": "grpc://exp1.sl.cloud9.ibm.com:32023"
+        },
+        {
+            "requestURL": "grpc://exp1.sl.cloud9.ibm.com:31024",
+            "eventURL": "grpc://exp1.sl.cloud9.ibm.com:32024"
+        },
+        {
+            "requestURL": "grpc://exp1.sl.cloud9.ibm.com:31025",
+            "eventURL": "grpc://exp1.sl.cloud9.ibm.com:32025"
+        },
+        {
+            "requestURL": "grpc://exp1.sl.cloud9.ibm.com:31026",
+            "eventURL": "grpc://exp1.sl.cloud9.ibm.com:32026"
+        },
+        {
+            "requestURL": "grpc://exp1.sl.cloud9.ibm.com:31027",
+            "eventURL": "grpc://exp1.sl.cloud9.ibm.com:32027"
+        },
+        {
+            "requestURL": "grpc://exp1.sl.cloud9.ibm.com:31028",
+            "eventURL": "grpc://exp1.sl.cloud9.ibm.com:32028"
+        },
+        {
+            "requestURL": "grpc://exp1.sl.cloud9.ibm.com:31029",
+            "eventURL": "grpc://exp1.sl.cloud9.ibm.com:32029"
+        },
+        {
+            "requestURL": "grpc://exp1.sl.cloud9.ibm.com:31030",
+            "eventURL": "grpc://exp1.sl.cloud9.ibm.com:32030"
+        }
+    ]
+}
