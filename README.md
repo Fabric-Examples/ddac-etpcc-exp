@@ -1,4 +1,6 @@
 # Experiments for paper entitled Decentralized Data Access Control over Private Blockchain
 
+## Prerequisite
 
-Appendix is found [here](appendix.pdf)
+- Hyperledger Fabric 1.4
+- Hyperledger Composer 0.20.x
